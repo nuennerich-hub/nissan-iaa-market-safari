@@ -132,7 +132,6 @@ const [view, setView] = useState(defaultView);
               <h1 className="text-3xl md:text-5xl font-black mt-3 leading-tight">IAA Market Safari</h1>
               <p className="text-gray-600 mt-3 text-base md:text-lg max-w-2xl">Guided Competitive Learning · Nutzfahrzeuge bis 3,5 t · Markt verstehen statt Fahrzeuge vergleichen</p>
             </div>
-             
             </div>
           </div>
         </header>
