@@ -31,9 +31,9 @@ export default function App() {
     : "/";
 
 const defaultView =
-  currentPath === "/trainer"
-    ? "trainer"
-    : "participant";
+  currentPath === '/trainer'
+    ? 'trainer'
+    : 'participant';
 
 const [view, setView] = useState(defaultView);
   const [sessionName, setSessionName] = useState('IAA Market Safari');
