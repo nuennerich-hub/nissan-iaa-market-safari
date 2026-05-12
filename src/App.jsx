@@ -25,7 +25,17 @@ export default function App() {
   const initialAnswers = Object.fromEntries(questions.map(q => [q.key, '']));
   const initialRatings = Object.fromEntries(ratingCriteria.map(r => [r.key, 3]));
 
-  const [view, setView] = useState('participant');
+  const currentPath =
+  typeof window !== "undefined"
+    ? window.location.pathname
+    : "/";
+
+const defaultView =
+  currentPath === "/trainer"
+    ? "trainer"
+    : "participant";
+
+const [view, setView] = useState(defaultView);
   const [sessionName, setSessionName] = useState('IAA Market Safari');
   const [selectedGroup, setSelectedGroup] = useState('Gruppe 1');
   const [selectedCompetitor, setSelectedCompetitor] = useState('Ford Pro');
