@@ -568,7 +568,7 @@ function ParticipantView({
 
   <div className="flex items-start gap-3">
     <span className="w-7 text-center shrink-0">💡</span>
-    <span>Impulse für den Autohausalltag</span>
+    <span>Impulse für Ihre Akquise</span>
   </div>
 </div>
         </div>
