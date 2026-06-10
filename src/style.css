@@ -1,51 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @font-face {
   font-family: "NissanBrand";
   src: url("/fonts/Nissan Brand Light.otf") format("opentype");
   font-weight: 300;
-  font-style: normal;
-  font-display: swap;
 }
 
 @font-face {
   font-family: "NissanBrand";
   src: url("/fonts/Nissan Brand Regular.otf") format("opentype");
   font-weight: 400;
-  font-style: normal;
-  font-display: swap;
 }
 
 @font-face {
   font-family: "NissanBrand";
   src: url("/fonts/Nissan Brand Bold.otf") format("opentype");
   font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "NissanBrand";
-  src: url("/fonts/Nissan Brand Bold.otf") format("opentype");
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "NissanBrand";
-  src: url("/fonts/Nissan Brand Bold.otf") format("opentype");
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-html,
-body,
-#root,
-* {
-  font-family: "NissanBrand", Arial, Helvetica, sans-serif !important;
 }
 
 body {
+  font-family: "NissanBrand", Arial, Helvetica, sans-serif;
   background: #f6f6f6;
-  margin: 0;
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: "NissanBrand", Arial, Helvetica, sans-serif;
+}
+
+h1,
+h2,
+h3,
+.font-bold,
+.font-black {
+  font-family: "NissanBrand", Arial, Helvetica, sans-serif;
+  font-weight: 700;
 }
