@@ -553,7 +553,7 @@ function ParticipantView({
           <div className="space-y-3 mt-4 text-lg">
   <div className="flex items-start gap-3">
     <span className="w-7 text-center shrink-0">⏱</span>
-    <span>45–60 Minuten auf der Messe</span>
+    <span>60 Minuten auf der Messe</span>
   </div>
 
   <div className="flex items-start gap-3">
