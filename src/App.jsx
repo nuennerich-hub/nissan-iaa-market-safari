@@ -551,7 +551,7 @@ function ParticipantView({
           <div className="text-sm text-gray-300">Safari Ablauf</div>
 
           <div className="space-y-3 mt-4 text-lg">
-            <div>⏱ 45–60 Minuten auf der Messe</div>
+            <div>⏱ 60 Minuten auf der Messe</div>
             <div>📱 Stichpunkte direkt am Handy</div>
             <div>🎯 Fokus auf Markt & Vertrieb</div>
             <div>💡 Impulse für den Autohausalltag</div>
