@@ -1,3 +1,26 @@
+@font-face {
+  font-family: "NissanBrand";
+  src: url("/fonts/Nissan%20Brand%20Light.otf") format("opentype");
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: "NissanBrand";
+  src: url("/fonts/Nissan%20Brand%20Regular.otf") format("opentype");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "NissanBrand";
+  src: url("/fonts/Nissan%20Brand%20Bold.otf") format("opentype");
+  font-weight: 700;
+}
+
+body {
+  font-family: "NissanBrand", Arial, Helvetica, sans-serif;
+  background: #f6f6f6;
+}
+
 @import "tailwindcss";
 
 body {
