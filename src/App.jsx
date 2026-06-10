@@ -12,19 +12,10 @@ const defaultView = currentPath === "/trainer" ? "trainer" : "participant";
 export default function App() {
   const competitors = [
     "Ford Pro",
-    "Mercedes-Benz Vans",
-    "Volkswagen Nutzfahrzeuge",
-    "Renault Pro+",
-    "MAXUS",
-    "BYD",
     "Toyota Professional",
+    "Renault Nutzfahrzeuge",
     "KIA PBV",
-    "FIAT Professional",
     "Opel Nutzfahrzeuge",
-    "Peugeot Professional",
-    "Citroën Business",
-    "IVECO Daily",
-    "Nissan Nutzfahrzeuge",
   ];
 
   const groups = ["Gruppe 1", "Gruppe 2", "Gruppe 3", "Gruppe 4", "Gruppe 5"];
@@ -32,44 +23,44 @@ export default function App() {
   const questions = [
     {
       key: "branche",
-      title: "Welche Zielbranche adressiert dieser OEM?",
+      title: "Welche Zielgruppe oder Branche wird besonders sichtbar angesprochen?",
       hint: "z. B. Handwerk, Logistik, Kommune, Serviceflotten",
     },
     {
       key: "usecases",
-      title: "Welche Anwendungsfälle stehen sichtbar im Fokus?",
-      hint: "z. B. mobile Werkstatt, City-Logistik, Kühltransport",
+      title: "Welcher Bedarf oder Anwendungsfall wird besonders deutlich adressiert?",
+      hint: "Was möchte dieser Anbieter für seine Kunden vereinfachen oder verbessern?",
     },
     {
       key: "segmente",
-      title: "Welche Flotten- oder Gewerbesegmente werden offensiv angesprochen?",
-      hint: "z. B. Handwerk, KEP, Kommune, Großkunden",
+      title: "Welche Lösung oder welcher Use-Case wird besonders überzeugend gezeigt?",
+      hint: "z. B. Flottenlösung, Auf-/Umbau, EV-Konzept, digitaler Service",
     },
     {
       key: "chance",
-      title: "Wo liegen weiße Flecken, die Nissan besetzen könnte?",
-      hint: "Welche Chancen oder strategischen Lücken erkennt ihr?",
+      title: "Welchen Impuls nehmen Sie für Ihren Autohausalltag oder Ihre Akquise mit?",
+      hint: "Welche Idee können Sie konkret in Kundengesprächen oder Akquise nutzen?",
     },
   ];
 
   const ratingCriteria = [
     {
       key: "rating_professionalitaet",
-      label: "Professioneller Messeauftritt",
-      left: "schwach",
-      right: "sehr stark",
+      label: "Zielgruppen-Klarheit",
+      left: "kaum erkennbar",
+      right: "sehr klar",
     },
     {
       key: "rating_innovation",
-      label: "Innovationsgrad / Zukunftswirkung",
-      left: "klassisch",
-      right: "sehr innovativ",
+      label: "Nutzenorientierung",
+      left: "produktorientiert",
+      right: "kundenorientiert",
     },
     {
       key: "rating_vertriebslogik",
-      label: "Business- & Vertriebslogik",
-      left: "fahrzeugorientiert",
-      right: "lösungsorientiert",
+      label: "Praxisnähe",
+      left: "theoretisch",
+      right: "direkt anwendbar",
     },
   ];
 
@@ -239,9 +230,133 @@ export default function App() {
 
   function avgByCriterion(key) {
     if (!submissions.length) return 0;
-
     const values = submissions.map((item) => Number(item[key] || 0));
     return values.reduce((sum, value) => sum + value, 0) / values.length;
+  }
+
+  function exportPdf() {
+    const date = new Date().toLocaleDateString("de-DE");
+    const rows = submissions
+      .map(
+        (item) => `
+          <section class="result-card">
+            <h2>${item.group_name || ""} · ${item.competitor || ""}</h2>
+
+            <h3>1. Zielgruppe / Branche</h3>
+            <p>${escapeHtml(item.branche || "—")}</p>
+
+            <h3>2. Bedarf / Anwendungsfall</h3>
+            <p>${escapeHtml(item.usecases || "—")}</p>
+
+            <h3>3. Lösung / Use-Case</h3>
+            <p>${escapeHtml(item.segmente || "—")}</p>
+
+            <h3>4. Impuls für Autohausalltag / Akquise</h3>
+            <p>${escapeHtml(item.chance || "—")}</p>
+
+            <h3>Persönliches Transfer-Learning</h3>
+            <p>${escapeHtml(item.learning || "—")}</p>
+
+            <div class="ratings">
+              <div>Zielgruppen-Klarheit: <strong>${item.rating_professionalitaet || "—"}/5</strong></div>
+              <div>Nutzenorientierung: <strong>${item.rating_innovation || "—"}/5</strong></div>
+              <div>Praxisnähe: <strong>${item.rating_vertriebslogik || "—"}/5</strong></div>
+              <div>Ø Bewertung: <strong>${averageRating(item).toFixed(1)}/5</strong></div>
+            </div>
+          </section>
+        `
+      )
+      .join("");
+
+    const printWindow = window.open("", "_blank");
+
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>IAA Market Safari Ergebnisse</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              color: #111;
+              margin: 40px;
+              line-height: 1.45;
+            }
+            .topline {
+              height: 8px;
+              background: #c3002f;
+              margin-bottom: 28px;
+            }
+            h1 {
+              font-size: 32px;
+              margin: 0 0 8px;
+            }
+            .meta {
+              color: #555;
+              margin-bottom: 32px;
+            }
+            .result-card {
+              border: 1px solid #ddd;
+              border-radius: 14px;
+              padding: 22px;
+              margin-bottom: 22px;
+              break-inside: avoid;
+              page-break-inside: avoid;
+            }
+            h2 {
+              font-size: 22px;
+              margin: 0 0 18px;
+              color: #c3002f;
+            }
+            h3 {
+              font-size: 14px;
+              margin: 16px 0 4px;
+              text-transform: uppercase;
+              letter-spacing: 0.04em;
+            }
+            p {
+              margin: 0;
+              white-space: pre-wrap;
+            }
+            .ratings {
+              display: grid;
+              grid-template-columns: repeat(2, 1fr);
+              gap: 8px;
+              background: #f3f3f3;
+              border-radius: 10px;
+              padding: 12px;
+              margin-top: 18px;
+            }
+            @media print {
+              body {
+                margin: 24px;
+              }
+              button {
+                display: none;
+              }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="topline"></div>
+          <h1>IAA Market Safari – Ergebnisdokumentation</h1>
+          <div class="meta">
+            Session: ${escapeHtml(sessionName)}<br/>
+            Datum: ${date}<br/>
+            Anzahl Eingaben: ${submissions.length}
+          </div>
+
+          ${rows || "<p>Noch keine Ergebnisse vorhanden.</p>"}
+
+          <script>
+            window.onload = function() {
+              window.print();
+            };
+          </script>
+        </body>
+      </html>
+    `);
+
+    printWindow.document.close();
   }
 
   const ranking = useMemo(() => {
@@ -251,34 +366,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#f5f5f5] text-[#111]">
       <div className="max-w-7xl mx-auto p-4 md:p-8 space-y-6">
-        <header className="bg-white rounded-[32px] shadow-sm border border-gray-200 overflow-hidden">
-          <div className="bg-[#c3002f] h-2 w-full" />
-
-          <div className="p-6 md:p-8">
-            <div className="flex items-center gap-5">
-              <img
-                src="/new-Nissan-logo-black-png-large-size.png"
-                alt="Nissan Logo"
-                className="h-16 md:h-24 w-auto object-contain"
-              />
-
-              <div>
-                <div className="uppercase tracking-[0.3em] text-xs font-bold text-[#c3002f]">
-                  Nissan Internal
-                </div>
-
-                <h1 className="text-3xl md:text-5xl font-black mt-3">
-                  IAA Market Safari
-                </h1>
-
-                <p className="text-gray-600 mt-3 text-base md:text-lg">
-                  Guided Competitive Learning · Nutzfahrzeuge bis 3,5 t · Markt
-                  verstehen statt Fahrzeuge vergleichen
-                </p>
-              </div>
-            </div>
-          </div>
-        </header>
+        <Header />
 
         {statusMessage && (
           <div className="bg-red-50 border border-red-200 text-red-800 rounded-2xl p-4 font-semibold">
@@ -323,11 +411,45 @@ export default function App() {
             avgByCriterion={avgByCriterion}
             fetchResults={fetchResults}
             resetAllSubmissions={resetAllSubmissions}
+            exportPdf={exportPdf}
             loading={loading}
           />
         )}
       </div>
     </div>
+  );
+}
+
+function Header() {
+  return (
+    <header className="bg-white rounded-[32px] shadow-sm border border-gray-200 overflow-hidden">
+      <div className="bg-[#c3002f] h-2 w-full" />
+
+      <div className="p-6 md:p-8">
+        <div className="flex items-center gap-5">
+          <img
+            src="/new-Nissan-logo-black-png-large-size.png"
+            alt="Nissan Logo"
+            className="h-16 md:h-24 w-auto object-contain"
+          />
+
+          <div>
+            <div className="uppercase tracking-[0.3em] text-xs font-bold text-[#c3002f]">
+              Nissan Internal
+            </div>
+
+            <h1 className="text-3xl md:text-5xl font-black mt-3">
+              IAA Market Safari
+            </h1>
+
+            <p className="text-gray-600 mt-3 text-base md:text-lg">
+              Guided Competitive Learning · Nutzfahrzeuge bis 3,5 t · Markt
+              verstehen statt Fahrzeuge vergleichen
+            </p>
+          </div>
+        </div>
+      </div>
+    </header>
   );
 }
 
@@ -385,7 +507,7 @@ function ParticipantView({
             Setup
           </div>
 
-          <h2 className="text-2xl font-bold mt-2">Gruppe & Wettbewerber</h2>
+          <h2 className="text-2xl font-bold mt-2">Gruppe & Anbieter</h2>
         </div>
 
         <div>
@@ -412,7 +534,7 @@ function ParticipantView({
 
         <div>
           <label className="block font-semibold mb-2 text-sm">
-            Wettbewerber
+            Beobachteter Anbieter
           </label>
           <select
             className="w-full rounded-2xl border border-gray-300 p-4 bg-gray-50 text-lg"
@@ -431,8 +553,8 @@ function ParticipantView({
           <div className="space-y-3 mt-4 text-lg">
             <div>⏱ 45–60 Minuten auf der Messe</div>
             <div>📱 Stichpunkte direkt am Handy</div>
-            <div>🎯 Fokus auf Markt & Wettbewerb</div>
-            <div>💡 Chancen für Nissan erkennen</div>
+            <div>🎯 Fokus auf Markt & Vertrieb</div>
+            <div>💡 Impulse für den Autohausalltag</div>
           </div>
         </div>
       </section>
@@ -448,7 +570,8 @@ function ParticipantView({
           </h2>
 
           <p className="text-gray-600 mt-3 text-lg">
-            Keine langen Texte. Nur kurze Beobachtungen aus Verkäufersicht.
+            Beobachten Sie aus Verkäufersicht: Was lässt sich für Akquise,
+            Beratung und Kundengespräche mitnehmen?
           </p>
         </div>
 
@@ -484,16 +607,12 @@ function ParticipantView({
 
         <div className="bg-white rounded-[32px] shadow-sm border border-gray-200 p-6 md:p-8">
           <div className="uppercase tracking-[0.25em] text-xs font-bold text-[#c3002f]">
-            Kurze Bewertung
+            Kurze Einschätzung
           </div>
 
           <h3 className="text-3xl font-black mt-3">
-            Wie stark wirkt dieser Wettbewerber?
+            Wie nutzbar sind die Beobachtungen für Ihre Vertriebsarbeit?
           </h3>
-
-          <p className="text-gray-600 mt-3 text-lg">
-            Bitte gebt eine schnelle Einschätzung ab.
-          </p>
 
           <div className="space-y-7 mt-7">
             {ratingCriteria.map((criterion) => (
@@ -511,9 +630,7 @@ function ParticipantView({
                   min="1"
                   max="5"
                   value={ratings[criterion.key]}
-                  onChange={(e) =>
-                    updateRating(criterion.key, e.target.value)
-                  }
+                  onChange={(e) => updateRating(criterion.key, e.target.value)}
                   className="w-full mt-3 accent-[#c3002f]"
                 />
 
@@ -528,15 +645,16 @@ function ParticipantView({
 
         <div className="bg-gradient-to-br from-[#111] to-[#1e1e1e] text-white rounded-[32px] shadow-sm p-6 md:p-8">
           <div className="uppercase tracking-[0.25em] text-xs font-bold text-red-300">
-            Wichtigstes Learning
+            Persönliches Transfer-Learning
           </div>
 
           <h3 className="text-3xl font-black mt-3 leading-snug">
-            Was sollte Nissan aus dieser Beobachtung lernen?
+            Welche Idee, Zielgruppe oder Gesprächslogik möchten Sie künftig in
+            Ihrer Akquise nutzen?
           </h3>
 
           <textarea
-            placeholder="Wichtigste Erkenntnis für Nissan …"
+            placeholder="Persönliches Learning für den Vertriebsalltag …"
             className="mt-6 w-full min-h-[120px] rounded-[24px] border border-gray-700 bg-[#2b2b2b] p-5 text-lg text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500"
             value={learning}
             onChange={(e) => setLearning(e.target.value)}
@@ -568,6 +686,7 @@ function TrainerView({
   avgByCriterion,
   fetchResults,
   resetAllSubmissions,
+  exportPdf,
   loading,
 }) {
   return (
@@ -584,7 +703,7 @@ function TrainerView({
             </h2>
 
             <p className="text-gray-600 mt-3 text-lg">
-              Ergebnisse nur für Trainer · max. 20 Minuten Diskussion im Raum
+              Ergebnisse nur für Trainer · Export der eingegebenen Gruppenergebnisse
             </p>
           </div>
 
@@ -595,6 +714,13 @@ function TrainerView({
               className="bg-black text-white font-bold px-6 py-3 rounded-2xl"
             >
               Aktualisieren
+            </button>
+
+            <button
+              onClick={exportPdf}
+              className="bg-white border border-black text-black font-bold px-6 py-3 rounded-2xl"
+            >
+              PDF exportieren
             </button>
 
             <button
@@ -647,7 +773,7 @@ function TrainerView({
             className="bg-white rounded-[32px] shadow-sm border border-gray-200 p-6"
           >
             <div className="text-sm text-gray-500">
-              Stärkste Bewertung #{index + 1}
+              Höchste Nutzbarkeit #{index + 1}
             </div>
 
             <h3 className="text-2xl font-black mt-2">{item.competitor}</h3>
@@ -663,7 +789,9 @@ function TrainerView({
             </div>
 
             <div className="mt-5 border-t border-gray-200 pt-4">
-              <div className="text-sm text-gray-500">Learning</div>
+              <div className="text-sm text-gray-500">
+                Persönliches Transfer-Learning
+              </div>
 
               <p className="font-semibold mt-1 whitespace-pre-wrap">
                 {item.learning || "Noch kein Learning eingetragen"}
@@ -676,15 +804,15 @@ function TrainerView({
       <section className="bg-white rounded-[32px] shadow-sm border border-gray-200 overflow-hidden">
         <div className="p-6 md:p-8 border-b border-gray-200">
           <div className="uppercase tracking-[0.25em] text-xs font-bold text-[#c3002f]">
-            Wettbewerbsvergleich
+            Gruppenergebnisse
           </div>
 
           <h3 className="text-3xl font-black mt-2">
-            Strukturierte Safari-Ergebnisse
+            Strukturierte Market-Safari-Ergebnisse
           </h3>
 
           <p className="text-gray-600 mt-2">
-            Gegenüberstellung der Beobachtungen aus Verkäufersicht.
+            Gegenüberstellung der eingegebenen Beobachtungen aus Verkäufersicht.
           </p>
         </div>
 
@@ -693,7 +821,7 @@ function TrainerView({
             <thead>
               <tr className="bg-[#111] text-white">
                 <th className="p-5 text-base">Gruppe</th>
-                <th className="p-5 text-base">Wettbewerber</th>
+                <th className="p-5 text-base">Anbieter</th>
 
                 {questions.map((question) => (
                   <th key={question.key} className="p-5 text-base min-w-[260px]">
@@ -702,7 +830,7 @@ function TrainerView({
                 ))}
 
                 <th className="p-5 text-base min-w-[260px]">
-                  Learning für Nissan
+                  Persönliches Transfer-Learning
                 </th>
 
                 <th className="p-5 text-base">Ø Bewertung</th>
@@ -762,29 +890,35 @@ function TrainerView({
         <div className="grid md:grid-cols-3 gap-5 mt-6">
           <div className="bg-white/10 rounded-3xl p-5">
             <div className="text-3xl font-black text-red-300">1</div>
-
             <p className="font-bold text-xl mt-3">
-              Welche Branchen wurden am stärksten sichtbar?
+              Welche Zielgruppen wurden besonders sichtbar angesprochen?
             </p>
           </div>
 
           <div className="bg-white/10 rounded-3xl p-5">
             <div className="text-3xl font-black text-red-300">2</div>
-
             <p className="font-bold text-xl mt-3">
-              Wer verkauft am stärksten Business-Lösungen statt Fahrzeuge?
+              Welche Vertriebsimpulse lassen sich direkt nutzen?
             </p>
           </div>
 
           <div className="bg-white/10 rounded-3xl p-5">
             <div className="text-3xl font-black text-red-300">3</div>
-
             <p className="font-bold text-xl mt-3">
-              Wo liegen die größten Chancen für Nissan?
+              Was nehmen Sie konkret für Ihre nächste Akquise mit?
             </p>
           </div>
         </div>
       </section>
     </main>
   );
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
