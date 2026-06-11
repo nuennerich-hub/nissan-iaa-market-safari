@@ -4,14 +4,6 @@
 
 @font-face {
   font-family: "NissanBrand";
-  src: url("/fonts/Nissan Brand Light.otf") format("opentype");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "NissanBrand";
   src: url("/fonts/Nissan Brand Regular.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
@@ -26,15 +18,80 @@
   font-display: swap;
 }
 
-body {
+:root {
   font-family: "NissanBrand", Arial, Helvetica, sans-serif;
-  background: #f6f6f6;
+  background: #f5f5f5;
+  color: #111111;
+}
+
+html,
+body,
+#root {
   margin: 0;
+  min-height: 100%;
+  font-family: "NissanBrand", Arial, Helvetica, sans-serif;
+  background: #f5f5f5;
+}
+
+body {
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 button,
 input,
 textarea,
 select {
-  font-family: inherit;
+  font-family: "NissanBrand", Arial, Helvetica, sans-serif;
+  font-weight: 400;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "NissanBrand", Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+.font-black {
+  font-weight: 700 !important;
+}
+
+.font-bold {
+  font-weight: 700 !important;
+}
+
+.text-5xl {
+  line-height: 1.05 !important;
+}
+
+.text-4xl {
+  line-height: 1.08 !important;
+}
+
+.text-3xl {
+  line-height: 1.12 !important;
+}
+
+.rounded-\[32px\] {
+  border-radius: 26px !important;
+}
+
+.rounded-\[28px\] {
+  border-radius: 22px !important;
+}
+
+.shadow-sm {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06) !important;
+}
+
+.bg-\[\#111\] {
+  background-color: #151515 !important;
+}
+
+.border-gray-200 {
+  border-color: #dddddd !important;
 }
