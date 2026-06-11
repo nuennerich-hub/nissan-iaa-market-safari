@@ -28,7 +28,7 @@ export default function App() {
     },
     {
       key: "usecases",
-      title: "Welcher Bedarf oder Anwendungsfall wird besonders deutlich adressiert?",
+      title: "Welcher Bedarf / Anwendungsfall wird besonders deutlich adressiert?",
       hint: "Was möchte dieser Anbieter für seine Kunden vereinfachen oder verbessern?",
     },
     {
