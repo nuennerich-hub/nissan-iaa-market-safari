@@ -475,6 +475,12 @@ function ParticipantView({
   loading,
   resetParticipantForm,
 }) {
+  const answeredCount = questions.filter((question) =>
+    String(answers[question.key] || "").trim().length > 0
+  ).length;
+
+  const progress = Math.round((answeredCount / questions.length) * 100);
+
   if (submitted) {
     return (
       <main className="bg-white rounded-[32px] shadow-sm border border-gray-200 p-8 md:p-12 text-center">
@@ -550,27 +556,27 @@ function ParticipantView({
         <div className="bg-[#111] text-white rounded-[28px] p-6">
           <div className="text-sm text-gray-300">Safari Ablauf</div>
 
-          <div className="space-y-3 mt-4 text-lg">
-  <div className="flex items-start gap-3">
-    <span className="w-7 text-center shrink-0">⏱</span>
-    <span>60 Minuten auf der Messe</span>
-  </div>
+          <div className="space-y-4 mt-4 text-lg">
+            <div className="flex items-start gap-3">
+              <span className="w-7 text-center shrink-0">⏱</span>
+              <span>60 Minuten auf der Messe</span>
+            </div>
 
-  <div className="flex items-start gap-3">
-    <span className="w-7 text-center shrink-0">📱</span>
-    <span>Stichpunkte direkt am Handy</span>
-  </div>
+            <div className="flex items-start gap-3">
+              <span className="w-7 text-center shrink-0">📱</span>
+              <span>Stichpunkte direkt am Handy</span>
+            </div>
 
-  <div className="flex items-start gap-3">
-    <span className="w-7 text-center shrink-0">🎯</span>
-    <span>Fokus auf Markt & Vertrieb</span>
-  </div>
+            <div className="flex items-start gap-3">
+              <span className="w-7 text-center shrink-0">🎯</span>
+              <span>Fokus auf Markt & Vertrieb</span>
+            </div>
 
-  <div className="flex items-start gap-3">
-    <span className="w-7 text-center shrink-0">💡</span>
-    <span>Impulse für Ihre Akquise</span>
-  </div>
-</div>
+            <div className="flex items-start gap-3">
+              <span className="w-7 text-center shrink-0">💡</span>
+              <span>Impulse für Ihre Akquise</span>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -588,6 +594,22 @@ function ParticipantView({
             Beobachten Sie aus Verkäufersicht: Was lässt sich für Akquise,
             Beratung und Kundengespräche mitnehmen?
           </p>
+
+          <div className="mt-6">
+            <div className="flex justify-between text-sm font-bold text-gray-700">
+              <span>Bearbeitungsstand</span>
+              <span>
+                {answeredCount}/{questions.length} Fragen
+              </span>
+            </div>
+
+            <div className="mt-2 h-3 bg-gray-200 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-[#c3002f] transition-all duration-300"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+          </div>
         </div>
 
         {questions.map((question, index) => (
@@ -596,7 +618,7 @@ function ParticipantView({
             className="bg-white rounded-[32px] shadow-sm border border-gray-200 p-6 md:p-8"
           >
             <div className="flex items-start gap-4">
-              <div className="min-w-[52px] h-[52px] rounded-2xl bg-[#c3002f] text-white flex items-center justify-center text-2xl font-black">
+              <div className="min-w-[60px] h-[60px] rounded-full bg-[#c3002f] text-white flex items-center justify-center text-2xl font-black shadow-md">
                 {index + 1}
               </div>
 
@@ -718,7 +740,8 @@ function TrainerView({
             </h2>
 
             <p className="text-gray-600 mt-3 text-lg">
-              Ergebnisse nur für Trainer · Export der eingegebenen Gruppenergebnisse
+              Ergebnisse nur für Trainer · Export der eingegebenen
+              Gruppenergebnisse
             </p>
           </div>
 
