@@ -33,7 +33,7 @@ export default function App() {
     },
     {
       key: "segmente",
-      title: "Welche Lösung oder welcher Use-Case wird besonders überzeugend gezeigt?",
+      title: "Welche Lösung / welcher Use-Case wird besonders überzeugend gezeigt?",
       hint: "z. B. Flottenlösung, Auf-/Umbau, EV-Konzept, digitaler Service",
     },
     {
